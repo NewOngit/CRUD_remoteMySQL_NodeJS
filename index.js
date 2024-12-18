@@ -23,7 +23,7 @@ app.get('/schools',(req,res)=>{
         }
             
         else {
-            connection.query("from schools",(err,data)=>{
+            connection.query("select * from schools",(err,data)=>{
 
         connection.release();
                 console.log(data);
