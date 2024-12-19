@@ -34,4 +34,8 @@ app.get('/schools',(req,res)=>{
     
 })
 
+
+app.post('/upload',(req,res)=>{
+    res.send(req.body);
+})
 app.listen(5000,console.log('server is running'));
