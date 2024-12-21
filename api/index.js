@@ -2,7 +2,9 @@ require('dotenv').config()
 const sql=require('mysql')
 const express=require('express')
 const app=express()
-
+const cors =require('cors')
+app.use(express.json())
+app.use(cors()) 
 
 const pool =sql.createPool({
     host:process.env.DB_HOST,
@@ -34,8 +36,29 @@ app.get('/schools',(req,res)=>{
     
 })
 
+const storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+            cb(null,'/temp')},
+    filename:(req,file,cb)=>{
+        
+cb(null,file.fieldname+""+path.extname(file.originalname))
+//cb(null, 'image.png')
+}})
 
-app.post('/upload',(req,res)=>{
-    res.send(req.body);
+const upload=multer({
+    storage:storage})
+
+app.post('/upload',upload.single('image'),(req,res)=>{
+    console.log(JSON.stringify(req.body));
+    try {
+        let file=req.file;
+        var base64String= fs.readFileSync(file.path, 'base64');
+            
+        res.send(req.body);   
+    } catch (error) {
+        
+    }
+    
+    
 })
 app.listen(5000,console.log('server is running'));
