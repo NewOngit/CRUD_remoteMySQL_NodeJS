@@ -1,10 +1,11 @@
-// require('dotenv').config()
-// const sql=require('mysql')
-// const express=require('express')
-// const app=express()
-// const cors =require('cors')
-// app.use(express.json())
-// app.use(cors()) 
+require('dotenv').config()
+const sql=require('mysql')
+const express=require('express')
+const app=express()
+const cors =require('cors')
+const multer = require('multer')
+app.use(express.json())
+app.use(cors()) 
 
 // const pool =sql.createPool({
 //     host:process.env.DB_HOST,
@@ -36,18 +37,22 @@
     
 // })
 
-// const storage=multer.diskStorage({
-//     destination:(req,file,cb)=>{
-//             cb(null,'/temp')},
-//     filename:(req,file,cb)=>{
+const storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+            cb(null,'/temp')},
+    filename:(req,file,cb)=>{
         
-// cb(null,file.fieldname+""+path.extname(file.originalname))
-// //cb(null, 'image.png')
-// }})
+cb(null,file.fieldname+""+path.extname(file.originalname))
+//cb(null, 'image.png')
+}})
 
-// const upload=multer({
-//     storage:storage})
+const upload=multer({
+    storage:storage})
 
+app.use(upload.single('image'));
+    app.post((req,res)=>{
+            res.json(req.body);
+    });
 // app.post('/upload',upload.single('image'),(req,res)=>{
 //     console.log(JSON.stringify(req.body));
 //     try {
@@ -62,7 +67,7 @@
     
 // })
 // app.listen(5000,console.log('server is running'));
-
-module.exports=(req,res)=>{
-    res.status(200).json({message:"hello !!!"});
-};
+export default app;
+// module.exports=(req,res)=>{
+//     res.status(200).json({message:"hello !!!"});
+// };
